@@ -49,6 +49,8 @@ public class SerialReaderLoadstar extends Thread implements SerialPortEventListe
 				return;
 			}
 			
+			buff.removeElementAt( buff.size()-1 );
+			
 			System.out.println("# got CR or LF have valid packet");
 			
 			int b[]=new int[buff.size()];
