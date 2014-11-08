@@ -5,6 +5,8 @@ import javax.comm.SerialPort;
 
 public class DataSourceLoadCell implements ListenerLoadCell {
 	public static final boolean debug=false;
+	
+	public String outPrefix;
 
 	/* fire it off via TCP/IP */
 	public void packetReceivedTemperature(int[] rawBuffer) {
@@ -18,17 +20,26 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		}
 		
 		
-		System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
+		//System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
+		System.out.println(outPrefix + sb.toString());
 	}
 
 	public void run(String[] args) throws IOException {
 		String serialPortName="/dev/ttyUSB0";
+		String prefix="L";
 	
 		if ( args.length >= 1 ) {
 			serialPortName=args[0];
 		}
 		
+		if ( args.length >= 2 ) {
+			prefix=args[2];
+		}
+		
+		outPrefix=prefix;
+		
 		System.err.println("# connecting to serial port " + serialPortName);
+		System.err.println("# prefixing data with '" + prefix + "' before sending to DataGS");
 		SerialReaderLoadstar ser810W = new SerialReaderLoadstar(serialPortName, 230400, SerialPort.PARITY_NONE);
 
 		ser810W.addPacketListener(this);
