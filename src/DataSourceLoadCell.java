@@ -14,7 +14,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 			if ( ' ' == rawBuffer[i] )
 				continue;
 			
-			sb.append(rawBuffer[i]);
+			sb.append( (char) (rawBuffer[i] & 0xff) );
 		}
 		
 		
