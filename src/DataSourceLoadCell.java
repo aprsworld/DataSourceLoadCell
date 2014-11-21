@@ -77,7 +77,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 
 		
 		ser810W.addPacketListener(this);
-		ser810W.send("WC\n");
+		ser810W.send("WC\r\n");
 	}
 
 	public static void main(String[] args) throws IOException {
