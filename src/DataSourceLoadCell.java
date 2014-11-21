@@ -13,12 +13,18 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	
 	public String outPrefix;
 
+
+	private long nPackets=0;
+	
 	/* GUI stuff */
 	public static final boolean gui=true;
 	protected JLabel labelCurrentValue;
+	protected JLabel labelNPackets;
 	
 	/* fire it off via TCP/IP */
 	public void packetReceivedLoad(int[] rawBuffer) {
+		nPackets++;
+		
 		StringBuilder sb=new StringBuilder();
 		
 		for ( int i=0 ; i<rawBuffer.length ; i++ ) {
@@ -36,6 +42,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		
 		if ( gui ) {
 			labelCurrentValue.setText(sb.toString() + " pounds");
+			labelNPackets.setText(nPackets + " total packets");
 		}
 		
 		
@@ -48,6 +55,10 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		labelCurrentValue = new JLabel("Waiting for data...");
 		labelCurrentValue.setFont(new Font("Serif", Font.PLAIN, 64));
 		frame.getContentPane().add(labelCurrentValue);
+
+		labelNPackets = new JLabel("Waiting for data...");
+		labelNPackets.setFont(new Font("Serif", Font.PLAIN, 64));
+		frame.getContentPane().add(labelNPackets);
 
 		//Display the window.
 		frame.setLayout(new FlowLayout());
