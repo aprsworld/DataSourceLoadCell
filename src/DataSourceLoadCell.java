@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.comm.SerialPort;
 import javax.swing.JFrame;
@@ -42,7 +44,10 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		
 		if ( gui ) {
 			labelCurrentValue.setText(sb.toString() + " pounds");
-			labelNPackets.setText(nPackets + " total packets");
+			
+			if ( nPackets%100 == 0 ) {
+				labelNPackets.setText( NumberFormat.getNumberInstance(Locale.US).format(nPackets) + " total packets");
+			}
 		}
 		
 		
