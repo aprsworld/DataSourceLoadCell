@@ -18,6 +18,11 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 
 	private long nPackets=0;
 	
+	private TCPWriter dataGS;
+	public String dataGSHostname;
+	public int dataGSPort;
+	
+	
 	/* GUI stuff */
 	public static final boolean gui=true;
 	protected JLabel labelCurrentValue;
@@ -76,6 +81,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	public void run(String[] args) throws IOException {
 		String serialPortName="/dev/ttyUSB0";
 		String prefix="L";
+		dataGS=null;
 	
 		if ( args.length >= 1 ) {
 			serialPortName=args[0];
@@ -85,21 +91,37 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 			prefix=args[2];
 		}
 		
+		if ( args.length >= 4 ) {
+			dataGSHostname=args[3];
+			dataGSPort=Integer.parseInt(args[4]);
+			dataGS = new TCPWriter(dataGSHostname, dataGSPort);
+		}
+		
 		outPrefix=prefix;
 		
+		/* startup messages */
 		System.err.println("# connecting to serial port " + serialPortName);
+		if ( null != dataGS ) {
+			System.err.println("# sending to DataGS at " + dataGSHostname + ":" + dataGSPort);
+		}
 		System.err.println("# prefixing data with '" + prefix + "' before sending to DataGS");
-		SerialReaderLoadstar ser810W = new SerialReaderLoadstar(serialPortName, 230400, SerialPort.PARITY_NONE);
+		SerialReaderLoadstar serialReaderLoadCell = new SerialReaderLoadstar(serialPortName, 230400, SerialPort.PARITY_NONE);
 
 		if ( gui ) {
 			setupGUI();
 		}
+		
+		if ( null != dataGS ) {
+			System.err.print("# opening connection to DataGS host ... ");
+			dataGS.start();
+			System.err.println("done");
+		}
 
 		
-		ser810W.addPacketListener(this);
-		ser810W.send("\r\n"); // end any running on loadstar
+		serialReaderLoadCell.addPacketListener(this);
+		serialReaderLoadCell.send("\r\n"); // end any running on loadstar
 
-		ser810W.send("WC\r\n"); // start continuous streaming
+		serialReaderLoadCell.send("WC\r\n"); // start continuous streaming
 	}
 
 	public static void main(String[] args) throws IOException {
