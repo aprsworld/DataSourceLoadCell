@@ -122,6 +122,16 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		if ( null != dataGS ) {
 			System.err.print("# opening connection to DataGS host ... ");
 			dataGS.start();
+			
+			while ( ! dataGS.isConnected() ) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			System.err.println("done");
 		}
 
