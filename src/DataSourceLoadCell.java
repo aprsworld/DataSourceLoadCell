@@ -42,7 +42,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		//System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
 		System.out.println(outPrefix + sb.toString());
 		
-		long averagePacketsPerSecond = nPackets / ( System.currentTimeMillis() - firstTime);
+		long averagePacketsPerSecond = nPackets / ( (System.currentTimeMillis() - firstTime) / 1000 );
 		
 		
 		if ( gui ) {
@@ -97,7 +97,9 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 
 		
 		ser810W.addPacketListener(this);
-		ser810W.send("WC\r\n");
+		ser810W.send("\r\n"); // end any running on loadstar
+
+		ser810W.send("WC\r\n"); // start continuous streaming
 	}
 
 	public static void main(String[] args) throws IOException {
