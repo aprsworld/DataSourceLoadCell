@@ -13,22 +13,12 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	
 	public String outPrefix;
 
-	private long firstTime=0;
-	private long nPackets=0;
-	
 	/* GUI stuff */
 	public static final boolean gui=true;
 	protected JLabel labelCurrentValue;
-	protected JLabel labelPacketRate;
 	
 	/* fire it off via TCP/IP */
 	public void packetReceivedLoad(int[] rawBuffer) {
-		if ( 0 == firstTime )
-			firstTime=System.currentTimeMillis();
-		
-		
-		nPackets++;
-		
 		StringBuilder sb=new StringBuilder();
 		
 		for ( int i=0 ; i<rawBuffer.length ; i++ ) {
@@ -42,12 +32,10 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		//System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
 		System.out.println(outPrefix + sb.toString());
 		
-		long averagePacketsPerSecond = nPackets / ( (System.currentTimeMillis() - firstTime) / 1000 );
 		
 		
 		if ( gui ) {
 			labelCurrentValue.setText(sb.toString() + " pounds");
-			labelPacketRate.setText(averagePacketsPerSecond + " readings per second");
 		}
 		
 		
@@ -60,10 +48,6 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		labelCurrentValue = new JLabel("Waiting for data...");
 		labelCurrentValue.setFont(new Font("Serif", Font.PLAIN, 64));
 		frame.getContentPane().add(labelCurrentValue);
-
-		labelPacketRate = new JLabel("Waiting for data...");
-		labelPacketRate.setFont(new Font("Serif", Font.PLAIN, 64));
-		frame.getContentPane().add(labelPacketRate);
 
 		//Display the window.
 		frame.setLayout(new FlowLayout());
