@@ -13,7 +13,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	
 	public String outPrefix;
 
-	private long lastTime=0;
+	private long firstTime=0;
 	private long nPackets=0;
 	
 	/* GUI stuff */
@@ -23,7 +23,10 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	
 	/* fire it off via TCP/IP */
 	public void packetReceivedLoad(int[] rawBuffer) {
-		long nowTime=System.currentTimeMillis();
+		if ( 0 == firstTime )
+			firstTime=System.currentTimeMillis();
+		
+		
 		nPackets++;
 		
 		StringBuilder sb=new StringBuilder();
@@ -39,7 +42,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		//System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
 		System.out.println(outPrefix + sb.toString());
 		
-		long averagePacketsPerSecond = nPackets / ( nowTime - lastTime);
+		long averagePacketsPerSecond = nPackets / ( System.currentTimeMillis() - firstTime);
 		
 		
 		if ( gui ) {
@@ -47,7 +50,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 			labelPacketRate.setText(averagePacketsPerSecond + " readings per second");
 		}
 		
-		lastTime = nowTime;
+		
 	}
 	
 	protected void setupGUI() {
