@@ -96,12 +96,12 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		}
 		
 		if ( args.length >= 2 ) {
-			prefix=args[2];
+			prefix=args[1];
 		}
 		
 		if ( args.length >= 4 ) {
-			dataGSHostname=args[3];
-			dataGSPort=Integer.parseInt(args[4]);
+			dataGSHostname=args[2];
+			dataGSPort=Integer.parseInt(args[3]);
 			dataGS = new TCPWriter(dataGSHostname, dataGSPort);
 		}
 		
