@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.IOException;
 
@@ -60,6 +61,7 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		frame.getContentPane().add(labelPacketRate);
 
 		//Display the window.
+		frame.setLayout(new FlowLayout());
 		frame.setMinimumSize(new Dimension(400,300));
 		frame.pack();
 		
