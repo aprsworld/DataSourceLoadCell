@@ -16,6 +16,9 @@ public class SerialReaderLoadstar extends Thread implements SerialPortEventListe
 	long lastCharacter;
 
 
+	public void send(String s) {
+		link.sendLine(s);
+	}
 
 	public void addPacketListener(ListenerLoadCell b) {
 		packetListeners.add(b);
