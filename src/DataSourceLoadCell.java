@@ -55,6 +55,14 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 			}
 		}
 		
+		/* send to DataGS ... kill program if we can't */
+		if ( null != dataGS && dataGS.isConnected() ) {
+			if ( ! dataGS.sendLine(outPrefix + sb.toString() + "\n") ) {
+
+				System.err.println("# dataGS was not able to send. Killing program.");
+				System.exit(2);
+			}
+		}
 		
 	}
 	
