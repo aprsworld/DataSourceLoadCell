@@ -1,5 +1,5 @@
 
 
 public interface ListenerLoadCell {
-	public void packetReceivedTemperature(int[] rawBuffer);
+	public void packetReceivedLoad(int[] rawBuffer);
 }

@@ -66,7 +66,7 @@ public class SerialReaderLoadstar extends Thread implements SerialPortEventListe
 			
 			/* send packet to listeners */
 			for ( int i=0 ; i<packetListeners.size(); i++ ) {
-				packetListeners.elementAt(i).packetReceivedTemperature(b);
+				packetListeners.elementAt(i).packetReceivedLoad(b);
 			}
 			
 			/* clear for our next pass through */

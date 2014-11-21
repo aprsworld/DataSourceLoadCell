@@ -12,12 +12,17 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 	
 	public String outPrefix;
 
+	private long lastTime=0;
+	
 	/* GUI stuff */
 	public static final boolean gui=true;
 	protected JLabel labelCurrentValue;
+	protected JLabel labelPacketRate;
 	
 	/* fire it off via TCP/IP */
-	public void packetReceivedTemperature(int[] rawBuffer) {
+	public void packetReceivedLoad(int[] rawBuffer) {
+		long nowTime=System.currentTimeMillis();
+				
 		StringBuilder sb=new StringBuilder();
 		
 		for ( int i=0 ; i<rawBuffer.length ; i++ ) {
@@ -31,23 +36,31 @@ public class DataSourceLoadCell implements ListenerLoadCell {
 		//System.out.println("# We received (and trimmed) -> '" + sb.toString() + "'");
 		System.out.println(outPrefix + sb.toString());
 		
+		long gapMilliseconds = nowTime - lastTime;
+		
 		
 		if ( gui ) {
 			labelCurrentValue.setText(sb.toString() + " pounds");
+			labelPacketRate.setText(gapMilliseconds + " milliseconds");
 		}
+		
+		lastTime = nowTime;
 	}
 	
 	protected void setupGUI() {
 		JFrame frame = new JFrame("DataSourceLoadCell");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//Add the ubiquitous "Hello World" label.
 		labelCurrentValue = new JLabel("Waiting for data...");
 		labelCurrentValue.setFont(new Font("Serif", Font.PLAIN, 64));
 		frame.getContentPane().add(labelCurrentValue);
 
+		labelPacketRate = new JLabel("Waiting for data...");
+		labelPacketRate.setFont(new Font("Serif", Font.PLAIN, 64));
+		frame.getContentPane().add(labelPacketRate);
+
 		//Display the window.
-		frame.setMinimumSize(new Dimension(400,150));
+		frame.setMinimumSize(new Dimension(400,300));
 		frame.pack();
 		
 		frame.setVisible(true);
